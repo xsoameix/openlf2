@@ -1,0 +1,7 @@
+Below are the calls you can make to access your added functions...
+
+Format style is: DLL Name::API Name->Call to API
+
+
+kernel32.dll::LoadLibraryA->call dword ptr [74f138]
+kernel32.dll::GetProcAddress->call dword ptr [74f13c]
