@@ -5,7 +5,7 @@ set(PROJECT openlf2)
 SET(CMAKE_SYSTEM_NAME Windows)
 set(COMPILER_PREFIX i686-w64-mingw32)
 set(CMAKE_C_COMPILER /usr/bin/${COMPILER_PREFIX}-gcc)
-set(CMAKE_C_FLAGS "-B /usr/${COMPILER_PREFIX} -std=gnu11")
+set(CMAKE_C_FLAGS "-B /usr/${COMPILER_PREFIX} -B . -std=gnu11")
 
 # here is the target environment located
 set(CMAKE_FIND_ROOT_PATH ${COMPILER_PREFIX})
