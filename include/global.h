@@ -4,7 +4,7 @@
 #include "object.h"
 #include "file.h"
 
-struct global {
+typedef struct global {
     uint32_t game_state;
     uint8_t  is_object_exists[400];
 
@@ -16,7 +16,7 @@ struct global {
     //   ?[2]
     //   characters_or_drinks[30]
     //   weapons_or_attacks_or_criminals[350]
-    object * objects[400];
+    object_t * objects[400];
 
     // file[ 0]: data\template.dat
     // file[ 1]: data\julian.dat
@@ -83,7 +83,7 @@ struct global {
     // file[62]: data\julian_ball2.dat
     // file[63]: data\etc.dat
     // file[64]: data\broken_weapon.dat
-    file   * (* files)[65];
-};
+    file_t * (* files)[65];
+} global_t;
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef ITR_H
 #define ITR_H
 
-typedef struct _itr {
+typedef struct itr {
     uint32_t    kind;           // 0x0
     uint32_t    x;              // 0x4
     uint32_t    y;              // 0x8
@@ -22,6 +22,6 @@ typedef struct _itr {
     uint32_t    injury;         // 0x44
     uint32_t    zwidth;         // 0x48
     uint32_t    _unknown1;      // 0x4C
-} itr;
+} itr_t;
 
 #endif

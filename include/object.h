@@ -4,10 +4,10 @@
 #include <stdint.h>
 #include "file.h"
 
-typedef struct _object {
+typedef struct object {
     uint32_t    move_counter;          // 0x00
     uint32_t    run_counter;           // 0x04
-    uint32_t    invincible;            // 0x08
+    uint32_t    invincible_time;       // 0x08
     uint32_t    _unknown1;             // 0x0C
     int32_t     x;                     // 0x10
     int32_t     y;                     // 0x14
@@ -122,7 +122,7 @@ typedef struct _object {
     uint32_t    get_weapon_counter;    // 0x35C
     uint32_t    enemy;                 // 0x360
     uint32_t    team;                  // 0x364
-    file        * file;                // 0x368
-} object;
+    file_t      * file;                // 0x368
+} object_t;
 
 #endif

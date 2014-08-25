@@ -13,3 +13,11 @@ const uint32_t drink_type             = 6;
 
 const uint32_t in_the_sky_frame       =  0;
 const uint32_t hitting_frame          = 10;
+
+const uint8_t facing_right            = 0;
+const uint8_t facing_left             = 1;
+
+const uint32_t teleport_to_enemy       = 1;
+const uint32_t teleport_to_team        = 2;
+
+const uint32_t max_objects_size        = 400;

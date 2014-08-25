@@ -5,7 +5,7 @@
 #include "itr.h"
 #include "frame.h"
 
-typedef struct _file {
+typedef struct file {
     // firen_ball_dat:    0xF
     // woody_ball_dat:    0xF
     // henry_wind_dat:    0xF
@@ -39,12 +39,12 @@ typedef struct _file {
     uint32_t _padding2;
     uint32_t _unknown2;            // 0xAC
     uint32_t _padding3[5];
-    itr      attaking_itrs[4];     // 0xC4
+    itr_t    attaking_itrs[4];     // 0xC4
     uint32_t _padding4[316];
     uint32_t id;                   // 0x6F4
     uint32_t type;                 // 0x6F8
     uint32_t _padding5[42];
-    frame    frames[400];          // 0x7A4
-} file;
+    frame_t  frames[400];          // 0x7A4
+} file_t;
 
 #endif

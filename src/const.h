@@ -14,4 +14,12 @@ extern const uint32_t drink_type;
 extern const uint32_t in_the_sky_frame;
 extern const uint32_t hitting_frame;
 
+extern const uint8_t facing_right;
+extern const uint8_t facing_left;
+
+extern const uint32_t teleport_to_enemy;
+extern const uint32_t teleport_to_team;
+
+extern const uint32_t max_objects_size;
+
 #endif
