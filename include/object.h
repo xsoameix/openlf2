@@ -43,7 +43,7 @@ typedef struct object {
     uint32_t    _unknown9;             // 0xA4
     uint32_t    _unknown10;            // 0xA8
     uint32_t    _unknown11;            // 0xAC
-    uint32_t    fall;                  // 0xB0
+    int32_t     fall;                  // 0xB0
     int32_t     shaking;               // 0xB4
     uint32_t    bdefend;               // 0xB8
     uint8_t     _unknown12;            // 0xBC
@@ -90,8 +90,8 @@ typedef struct object {
     uint32_t    injured_of_attack[20]; // 0x280
     uint8_t     itr_of_attack[20];     // 0x2D0
     uint32_t    successful_attacks;    // 0x2E4
-    uint32_t    _unknown27;            // 0x2E8
-    uint32_t    _unknown28;            // 0x2EC
+    uint32_t    attackable_distance;   // 0x2E8
+    uint32_t    vulnerable_distance;   // 0x2EC
     uint32_t    _unknown29;            // 0x2F0
     uint32_t    clone;                 // 0x2F4
     uint32_t    _unknown30;            // 0x2F8
