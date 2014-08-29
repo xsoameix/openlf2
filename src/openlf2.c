@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <inttypes.h>
 #include <math.h>
 #include "util.h"
 #include "lf2.h"
@@ -17,30 +18,56 @@ shaking(void) {
     object_t * attacker = global->objects[attacker_id];
     object_t * injured = global->objects[injured_id];
     object_t * me = global->objects[2];
-    if (attacker_id != 2 && attacker->file->type == character_type && injured_id == 2) {
-        uint32_t holder_id = injured_id;
-        object_t * holder = injured;
+    if (attacker_id == 2 && injured->file->type == character_type) {
+        uint32_t holder_id = attacker_id;
+        object_t * holder = attacker;
         //if (holder->weapon_id > 0 && holder->weapon_type > 0) {
         //    holder_id = holder->weapon_id;
         //    holder = global->objects[holder_id];
         //}
-        holder->weapon_type = lignt_weapon_type;
-        holder->weapon_id = attacker_id;
-        attacker->owner = holder_id;
-        attacker->holder_id = holder_id;
-        attacker->weapon_type = - lignt_weapon_type;
+        //holder->weapon_type = lignt_weapon_type;
+        holder->weapon_id = injured_id;
+        injured->owner = holder_id;
+        injured->pic_x_gain = 0;
+        //attacker->holder_id = holder_id;
+        //attacker->weapon_type = - lignt_weapon_type;
+        //attacker->frame_id1 = 0;
+        //uint32_t weapon_id = attacker->weapon_id;
+        //uint8_t is_exists = global->is_object_exists[weapon_id];
+        //if (weapon_id != 0 && is_exists) {
+        //    object_t * weapon = global->objects[weapon_id];
+        //    printf("weapon_id %" PRIu32 ", weapon team %" PRIu32 "\n",
+        //            weapon_id, weapon->team);
+        //    weapon->team = holder->team;
+        //    printf("weapon_id %" PRIu32 ", weapon team %" PRIu32 "\n",
+        //            weapon_id, weapon->team);
+        //}
+        //fflush(stdout);
     }
-    if (injured_id == 2 && injured->weapon_id > 0 && injured->weapon_type > 0) {
+    uint32_t weapon_id = injured->weapon_id;
+    object_t * weapon = global->objects[weapon_id];
+    if (injured_id == 2 && weapon_id > 0) {
         uint32_t injury = itr->injury;
         injured->hp += injury;
-        injured->dark_hp -= injury / 6;
+        injured->dark_hp += injury / 6;
         injured->hp_lost -= injury;
-        uint32_t weapon_id = injured->weapon_id;
-        object_t * weapon = global->objects[weapon_id];
         weapon->hp -= injury;
-        weapon->dark_hp += injury / 6;
+        weapon->dark_hp -= injury / 6;
         weapon->hp_lost += injury;
+        weapon->fall += itr->fall;
+        weapon->y_velocity += itr->dvy;
+        weapon->x_velocity += injured->pic_x_gain;
+        weapon->frame_id1 = injured->frame_id1;
+        weapon->shaking -= 3;
         injured->fall = 0;
+        itr->fall = 0;
+        if (itr->effect % 10 == 2) {
+            itr->effect = 1;
+        }
+        injured->frame_id1 = injured->frame_id4;
+        injured->y_velocity = 0;
+        injured->y_accl = 0;
+        injured->pic_x_gain = 0;
     }
         //asm("leave");
         //asm("movl $0x00431ABB, %eax");
