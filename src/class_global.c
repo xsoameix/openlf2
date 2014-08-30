@@ -304,16 +304,13 @@ func_417400_does_attack_success(global_t * global, uint32_t attacker_id, uint32_
 
 thiscall void
 func_403270_teleport(global_t * global, uint32_t teleported_id, uint32_t teleport_to) {
+  object_t * teleported = global->objects[teleported_id];
   if (teleport_to == teleport_to_enemy) {
     uint32_t closest_object_id = -1;
     uint32_t min_distance = 10000;
-    object_t ** object_ptr = global->objects;
-    for (uint32_t object_id = 0;
-         object_id < max_objects_size;
-         object_id++, object_ptr++) {
+    for (uint32_t object_id = 0; object_id < max_objects_size; object_id++) {
       uint8_t object_exists = global->is_object_exists[object_id];
-      object_t * object = * object_ptr;
-      object_t * teleported = global->objects[teleported_id];
+      object_t * object = global->objects[object_id];
       uint32_t distance =
           abs(object->z - teleported->z) +
           abs(object->x - teleported->x);
@@ -328,35 +325,27 @@ func_403270_teleport(global_t * global, uint32_t teleported_id, uint32_t telepor
       }
     }
     if (closest_object_id == -1) {
-      object_t * teleported = global->objects[teleported_id];
       teleported->y = 0;
       teleported->y_position = teleported->y;
     } else {
-      object_t * teleported = global->objects[teleported_id];
       object_t * closest_object = global->objects[closest_object_id];
       teleported->y = 0;
       teleported->z = closest_object->z + 1;
-      int32_t closest_object_x = closest_object->x;
-      if (teleported->facing == facing_right) {
-        closest_object_x -= 120;
-      } else {
-        closest_object_x += 120;
-      }
-      teleported->x = closest_object_x;
+      teleported->x = closest_object->x +
+          (teleported->facing == facing_right) ?  - 120 : 120;
       teleported->x_position = teleported->x;
       teleported->y_position = teleported->y;
       teleported->z_position = teleported->z;
     }
+    teleported->z_velocity = 0;
+    teleported->x_velocity = 0;
+    teleported->y_velocity = 0;
   } else if (teleport_to == teleport_to_team) {
     uint32_t farthest_object_id = -1;
     int32_t max_distance = -1;
-    object_t ** object_ptr = global->objects;
-    for (uint32_t object_id = 0;
-         object_id < max_objects_size;
-         object_id++, object_ptr++) {
+    for (uint32_t object_id = 0; object_id < max_objects_size; object_id++) {
       uint8_t object_exists = global->is_object_exists[object_id];
-      object_t * object = * object_ptr;
-      object_t * teleported = global->objects[teleported_id];
+      object_t * object = global->objects[object_id];
       int32_t distance =
           abs(object->z - teleported->z) +
           abs(object->x - teleported->x);
@@ -371,30 +360,20 @@ func_403270_teleport(global_t * global, uint32_t teleported_id, uint32_t telepor
       }
     }
     if (farthest_object_id == -1) {
-      object_t * teleported = global->objects[teleported_id];
       teleported->y = 0;
       teleported->y_position = teleported->y;
     } else {
-      object_t * teleported = global->objects[teleported_id];
       object_t * farthest_object = global->objects[farthest_object_id];
       teleported->y = 0;
       teleported->z = farthest_object->z + 1;
-      int32_t farthest_object_x = farthest_object->x;
-      if (teleported->facing == facing_right) {
-        farthest_object_x -= 60;
-      } else {
-        farthest_object_x += 60;
-      }
-      teleported->x = farthest_object_x;
+      teleported->x = farthest_object->x +
+          (teleported->facing == facing_right) ?  - 60 : 60;
       teleported->x_position = teleported->x;
       teleported->y_position = teleported->y;
       teleported->z_position = teleported->z;
     }
-  } else {
-    return;
+    teleported->z_velocity = 0;
+    teleported->x_velocity = 0;
+    teleported->y_velocity = 0;
   }
-  object_t * teleported = global->objects[teleported_id];
-  teleported->z_velocity = 0;
-  teleported->x_velocity = 0;
-  teleported->y_velocity = 0;
 }
