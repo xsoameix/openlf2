@@ -332,7 +332,7 @@ func_403270_teleport(global_t * global, uint32_t teleported_id, uint32_t telepor
       teleported->y = 0;
       teleported->z = closest_object->z + 1;
       teleported->x = closest_object->x +
-          (teleported->facing == facing_right) ?  - 120 : 120;
+          ((teleported->facing == facing_right) ? - 120 : 120);
       teleported->x_position = teleported->x;
       teleported->y_position = teleported->y;
       teleported->z_position = teleported->z;
@@ -367,7 +367,7 @@ func_403270_teleport(global_t * global, uint32_t teleported_id, uint32_t telepor
       teleported->y = 0;
       teleported->z = farthest_object->z + 1;
       teleported->x = farthest_object->x +
-          (teleported->facing == facing_right) ?  - 60 : 60;
+          ((teleported->facing == facing_right) ? - 60 : 60);
       teleported->x_position = teleported->x;
       teleported->y_position = teleported->y;
       teleported->z_position = teleported->z;
