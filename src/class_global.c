@@ -1,5 +1,7 @@
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <inttypes.h>
 #include "static.h"
 #include "class_global.h"
 
@@ -23,9 +25,174 @@ func_417400_does_attack_success(global_t * global, uint32_t attacker_id, uint32_
   frame_t * injured_frame1 = &injured_file->frames[injured_frame_id1];
   frame_t * injured_frame3 = &injured_file->frames[injured_frame_id3];
   frame_t * injured_frame4 = &injured_file->frames[injured_frame_id4];
+  // stop (enemy)
+  if (attacker_file->id == 231 && injured_id != 2 && injured_file->type == character_type) {
+    if (injured->hp > 0) {
+      injured->frame_id1 = 0;
+      injured->frame_id3 = 0;
+      injured->frame_id4 = 0;
+      injured_frame_id1 = injured->frame_id1;
+      injured_frame_id3 = injured->frame_id3;
+      injured_frame_id4 = injured->frame_id4;
+      double radius = 60;
+      object_t * me = global->objects[2];
+      injured->x_position = me->x_position + radius;
+      injured->y_position = me->y_position - radius / 2;
+      injured->z_position = me->z_position;
+    }
+  }
+
+  // 2 D
+  if (attacker_file->id == 231 && injured_id == 2) {
+        object_t * me = global->objects[2];
+        double velocity = 15;
+        double radius = 60;
+        if (attacker->weapon_id != 0) {
+          double distance = attacker->weapon_id;
+          double theta = distance / radius;
+          if (attacker->facing == facing_right) {
+            attacker->x_position = me->x_position + radius * cos(theta);
+            attacker->y_position = me->y_position + radius * sin(theta) - 50;
+          } else {
+            attacker->x_position = me->x_position - radius * cos(theta);
+            attacker->y_position = me->y_position + radius * sin(theta) - 50;
+          }
+        }
+        attacker->z_position = me->z_position;
+        attacker->weapon_id += 15;
+        if (attacker->weapon_id >= 2 * radius * M_PI) {
+          attacker->weapon_id -= 2 * radius * M_PI;
+        }
+  }
+
+  // 3 D
+  //if (attacker_file->id == 232 && injured_id == 2) {
+  //  double velocity = 15;
+  //  double radius = 100;
+  //  if (attacker->weapon_id == 0) {
+  //    attacker->x_velocity = 0;
+  //    attacker->y_velocity = 0;
+  //    attacker->x_position = injured->x_position + radius;
+  //    attacker->y_position = injured->y_position;
+  //    attacker->z_position = injured->z_position;
+  //  } else {
+  //    double yz_distance = attacker->holder_id;
+  //    double yz_theta = yz_distance / radius;
+  //    double xy_distance = attacker->weapon_id;
+  //    double xy_theta = xy_distance / radius;
+  //    double xy_radius = radius * sin(xy_theta);
+  //    attacker->x_position = injured->x_position + radius * cos(xy_theta);
+  //    attacker->y_position = injured->y_position + xy_radius * cos(yz_theta);
+  //    attacker->z_position = injured->z_position - xy_radius * sin(yz_theta);
+  //  }
+  //  attacker->holder_id += 5;
+  //  attacker->weapon_id += 15;
+  //  if (attacker->weapon_id >= 2 * radius * M_PI) {
+  //    attacker->weapon_id -= 2 * radius * M_PI;
+  //  }
+  //  if (attacker->holder_id >= 2 * radius * M_PI) {
+  //    attacker->holder_id -= 2 * radius * M_PI;
+  //  }
+  //}
+
+  // track or imitate
+  //if (attacker->team != 0 &&
+  //    global->objects[2]->team == attacker->team &&
+  //    injured_id != 2 &&
+  //    injured->team != attacker->team) {
+  //    int32_t distance = attacker->x - injured->x;
+  //    //if (distance >= 0 && distance <= 250) {
+  //    //  injured->x_velocity -= 5;
+  //    //}
+  //    //if (distance < 0 && distance >= - 250) {
+  //    //  injured->x_velocity += 5;
+  //    //}
+  //    if (injured_file->type == character_type &&
+  //        attacker->file->id == 231) {
+  //        //int32_t x = injured->x - attacker->x;
+  //        //int32_t y = injured->y - attacker->y;
+  //        //int32_t z = injured->z - attacker->z;
+  //        //double reald = sqrt(x * x + y * y + z * z);
+  //        //double d = sqrt(x * x + y * y + z * z) * 0.4;
+  //        //double xv = x != 0 ? x / d : 0;
+  //        //double yv = y != 0 ? y / d : 0;
+  //        //double zv = z != 0 ? z / d : 0;
+  //        //double newxv = attacker->x_velocity + xv;
+  //        //double newyv = attacker->y_velocity + yv;
+  //        //double newzv = attacker->z_velocity + zv;
+  //        //double newdv = sqrt(newxv * newxv + newyv * newyv + newzv * newzv) * 0.4;
+  //        //double qi = 1 + d / 200;
+  //        //double qd = 1 - d / 200;
+  //        //double qx = ((newxv > 0 && xv > 0 || newxv < 0 && xv < 0) ? qi : qd);
+  //        //double qy = ((newyv > 0 && yv > 0 || newyv < 0 && yv < 0) ? qi : qd);
+  //        //double qz = ((newzv > 0 && zv > 0 || newzv < 0 && zv < 0) ? qi : qd);
+  //        //newxv = fmax(fmin(newxv * qx, 20), -20);
+  //        //newyv = fmax(fmin(newyv * qy, 20), -20);
+  //        //newzv = fmax(fmin(newzv * qz, 20), -20);
+  //        //newyv = ((attacker->y > 100 && newyv > 0 ||
+  //        //          attacker->y < -300 && newyv < 0) ? newyv / 100 : newyv);
+  //        //attacker->x_velocity = newxv != 0 ? newxv : 0;
+  //        //attacker->y_velocity = newyv != 0 ? newyv : 0;
+  //        //attacker->z_velocity = newzv != 0 ? newzv : 0;
+  //        //if (reald < 25) {
+  //          //attacker->x_velocity = newxv != 0 ? newxv / 100 : 0;
+  //          //attacker->y_velocity = newyv != 0 ? newyv / 100 : 0;
+  //          //attacker->z_velocity = newzv != 0 ? newzv / 100 : 0;
+  //          if (injured->hp > 0) {
+  //          object_t * me = global->objects[2];
+  //          attacker->x_velocity = 0;
+  //          attacker->y_velocity = me->y_velocity;
+  //          attacker->z_velocity = 0;
+  //          attacker->x_position = injured->x_position;
+  //          attacker->y_position = me->y_position;
+  //          attacker->z_position = injured->z_position;
+  //          attacker->facing = me->facing;
+  //          attacker->frame_id1 = me->frame_id1;
+  //          attacker->frame_id3 = me->frame_id2;
+  //          attacker->frame_id4 = me->frame_id3;
+  //          attacker_frame_id1 = attacker->frame_id1;
+  //          attacker_frame_id3 = attacker->frame_id3;
+  //          attacker_frame_id4 = attacker->frame_id4;
+  //          attacker_file = attacker->file;
+  //          attacker_frame1 = &attacker_file->frames[attacker_frame_id1];
+  //          attacker_frame3 = &attacker_file->frames[attacker_frame_id3];
+  //          attacker_frame4 = &attacker_file->frames[attacker_frame_id4];
+  //          }
+  //        //}
+  //    }
+  //    if (injured_file->type == attack_type) {
+  //      if (distance >= 0 && distance <= 250) {
+  //        injured->facing = facing_left;
+  //      }
+  //      if (distance < 0 && distance >= - 250) {
+  //        injured->facing = facing_right;
+  //      }
+  //    }
+  //}
+  //if (attacker->file->id == 231 && injured_id == 2) {
+  //  object_t * me = global->objects[2];
+  //  attacker->x_velocity = 0;
+  //  attacker->y_velocity = me->y_velocity;
+  //  attacker->z_velocity = 0;
+  //  attacker->y_position = me->y_position;
+  //  attacker->facing = me->facing;
+  //  attacker->frame_id1 = me->frame_id1;
+  //  attacker->frame_id3 = me->frame_id2;
+  //  attacker->frame_id4 = me->frame_id3;
+  //  attacker_frame_id1 = attacker->frame_id1;
+  //  attacker_frame_id3 = attacker->frame_id3;
+  //  attacker_frame_id4 = attacker->frame_id4;
+  //  attacker_file = attacker->file;
+  //  attacker_frame1 = &attacker_file->frames[attacker_frame_id1];
+  //  attacker_frame3 = &attacker_file->frames[attacker_frame_id3];
+  //  attacker_frame4 = &attacker_file->frames[attacker_frame_id4];
+  //}
   for (uint32_t itr_id = 0; itr_id < attacker_frame4->itrs_size; itr_id++) {
     itr_t * itr = &attacker_frame4->itrs[itr_id];
     for (uint32_t bdy_id = 0; bdy_id < injured_frame4->bdys_size; bdy_id++) {
+      if (itr->kind == itr_flute && injured->hp <= 0) {
+        break;
+      }
       // freeze ball can't be attack by the other balls.
       if ((attacker_file->id == john_ball_dat ||
            attacker_file->id == deep_ball_dat ||
